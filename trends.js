@@ -1,4 +1,4 @@
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
@@ -8,7 +8,7 @@ export default async function handler(req, res) {
 
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
-    return res.status(500).json({ error: { message: "ANTHROPIC_API_KEY non configurata nelle variabili d'ambiente Vercel." } });
+    return res.status(500).json({ error: { message: "ANTHROPIC_API_KEY non configurata." } });
   }
 
   try {
@@ -21,10 +21,9 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify(req.body)
     });
-
     const data = await response.json();
     return res.status(response.status).json(data);
   } catch (err) {
     return res.status(502).json({ error: { message: err.message } });
   }
-}
+};

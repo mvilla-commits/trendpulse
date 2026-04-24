@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/trends.js": {
+      "maxDuration": 55
+    }
+  }
+}

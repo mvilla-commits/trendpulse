@@ -1,6 +1,6 @@
 {
   "functions": {
-    "api/trends.js": {
+    "api/*.js": {
       "maxDuration": 55
     }
   }

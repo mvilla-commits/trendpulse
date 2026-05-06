@@ -115,12 +115,12 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
       </button>
     </div>
     <div class="tabs" id="tabsBar" style="display:none">
-      <button class="tab on" data-t="italy">🇮🇹 Italia</button>
-      <button class="tab" data-t="international">🌍 Internazionale</button>
+      <button class="tab on" data-t="italy">&#127470;&#127481; Italia</button>
+      <button class="tab" data-t="international">&#127760; Internazionale</button>
     </div>
     <div class="body" id="mainBody">
       <div class="center">
-        <div class="c-icon">◎</div>
+        <div class="c-icon">&#9678;</div>
         <div class="c-title">Benvenuto in TrendPulse</div>
         <div class="c-sub">Aggiungi un cliente e clicca "Analizza trend" per scoprire hashtag del giorno, audio virali e format efficaci su Instagram e TikTok.</div>
       </div>
@@ -129,22 +129,26 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
 </div>
 
 <script>
-var LS_CL="tp_clients_v3", LS_TR="tp_trends_v3";
-var COLS=["#D85A30","#185FA5","#1D9E75","#993556","#534AB7","#BA7517","#639922","#D4537E"];
-var clients=[], sel=null, trendsCache={}, tab="italy", loading=false;
+var WORKER = "https://trendpluse.m-villa-a79.workers.dev";
+var LS_CL = "tp_clients_v3", LS_TR = "tp_trends_v3";
+var COLS = ["#D85A30","#185FA5","#1D9E75","#993556","#534AB7","#BA7517","#639922","#D4537E"];
+var clients = [], sel = null, trendsCache = {}, tab = "italy", loading = false;
 
 function ini(n){return(n||"?").trim().split(/\s+/).map(function(w){return w[0]||"";}).join("").toUpperCase().slice(0,2)||"?";}
 function col(id){return COLS[parseInt(id,10)%COLS.length];}
 function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
-function fmtDate(iso){return new Date(iso).toLocaleDateString("it-IT",{day:"numeric",month:"long",year:"numeric"});}
-function fmtTime(iso){return new Date(iso).toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"});}
+function fmtDate(iso){try{return new Date(iso).toLocaleDateString("it-IT",{day:"numeric",month:"long",year:"numeric"});}catch(e){return "";}}
+function fmtTime(iso){try{return new Date(iso).toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"});}catch(e){return "";}}
 
 function saveClients(){try{localStorage.setItem(LS_CL,JSON.stringify(clients));}catch(e){}}
 function loadClients(){try{clients=JSON.parse(localStorage.getItem(LS_CL)||"[]");}catch(e){clients=[];}}
 function saveTrends(id,data){
-  try{var all={};try{all=JSON.parse(localStorage.getItem(LS_TR)||"{}");}catch(e){}
-  all[id]={data:data,date:new Date().toISOString()};
-  localStorage.setItem(LS_TR,JSON.stringify(all));trendsCache[id]=all[id];}catch(e){}
+  try{
+    var all={};try{all=JSON.parse(localStorage.getItem(LS_TR)||"{}");}catch(e){}
+    all[id]={data:data,date:new Date().toISOString()};
+    localStorage.setItem(LS_TR,JSON.stringify(all));
+    trendsCache[id]=all[id];
+  }catch(e){}
 }
 function loadTrends(){try{trendsCache=JSON.parse(localStorage.getItem(LS_TR)||"{}");}catch(e){trendsCache={};}}
 function getCached(id){return id?trendsCache[id]||null:null;}
@@ -154,15 +158,16 @@ function renderList(){
   if(!clients.length){el.innerHTML='<div class="cl-empty">Nessun cliente.<br>Aggiungine uno.</div>';return;}
   el.innerHTML=clients.map(function(c){
     var cc=getCached(c.id);
-    return'<div class="cl-item'+(sel&&sel.id===c.id?" active":"")+'" data-id="'+c.id+'">'
+    return '<div class="cl-item'+(sel&&sel.id===c.id?" active":"")+'" data-id="'+c.id+'">'
       +'<div class="cl-av" style="background:'+col(c.id)+'">'+ini(c.name)+'</div>'
       +'<div class="cl-info"><div class="cl-name">'+esc(c.name)+'</div>'
       +'<div class="cl-date">'+(cc?fmtDate(cc.date):"Nessuna ricerca")+'</div></div>'
-      +'<button class="cl-del" data-del="'+c.id+'">×</button></div>';
+      +'<button class="cl-del" data-del="'+c.id+'">&times;</button></div>';
   }).join("");
   el.querySelectorAll(".cl-item").forEach(function(item){
     item.addEventListener("click",function(e){
-      if(e.target.dataset.del){delClient(e.target.dataset.del);return;}
+      var d=e.target.closest(".cl-del");
+      if(d){delClient(d.dataset.del);return;}
       var f=clients.find(function(c){return c.id===item.dataset.id;});
       if(f)pickClient(f);
     });
@@ -178,27 +183,25 @@ function pickClient(c){
     document.getElementById("tbMeta").textContent="Ultima analisi: "+fmtDate(cc.date)+" alle "+fmtTime(cc.date);
     document.getElementById("tabsBar").style.display="flex";
     renderTrends(cc.data,true);
-  } else {
-    document.getElementById("tbMeta").textContent=c.desc?c.desc.slice(0,80)+(c.desc.length>80?"…":""):'Clicca "Analizza trend" per iniziare';
+  }else{
+    document.getElementById("tbMeta").textContent=c.desc?c.desc.slice(0,80)+(c.desc.length>80?"...":""):'Clicca "Analizza trend" per iniziare';
     document.getElementById("tabsBar").style.display="none";
-    showEmpty();
+    document.getElementById("mainBody").innerHTML='<div class="center"><div class="c-icon">&#9672;</div><div class="c-title">Pronto per '+esc(c.name)+'</div><div class="c-sub">Clicca "Analizza trend" per trovare hashtag, audio virali TikTok e format efficaci.</div></div>';
   }
 }
 
 function delClient(id){
   clients=clients.filter(function(c){return c.id!==id;});saveClients();
   try{var all=JSON.parse(localStorage.getItem(LS_TR)||"{}");delete all[id];localStorage.setItem(LS_TR,JSON.stringify(all));delete trendsCache[id];}catch(e){}
-  if(sel&&sel.id===id){sel=null;resetMain();}renderList();
-}
-function resetMain(){
-  document.getElementById("tbTitle").textContent="Seleziona un cliente";
-  document.getElementById("tbMeta").textContent="Aggiungi un profilo cliente per iniziare";
-  document.getElementById("goBtn").disabled=true;
-  document.getElementById("tabsBar").style.display="none";
-  document.getElementById("mainBody").innerHTML='<div class="center"><div class="c-icon">◎</div><div class="c-title">Nessun cliente</div><div class="c-sub">Seleziona o aggiungi un cliente dalla sidebar.</div></div>';
-}
-function showEmpty(){
-  document.getElementById("mainBody").innerHTML='<div class="center"><div class="c-icon">◈</div><div class="c-title">Pronto per '+esc(sel.name)+'</div><div class="c-sub">Clicca "Analizza trend" per trovare hashtag, audio virali TikTok e format efficaci.</div></div>';
+  if(sel&&sel.id===id){
+    sel=null;
+    document.getElementById("tbTitle").textContent="Seleziona un cliente";
+    document.getElementById("tbMeta").textContent="Aggiungi un profilo cliente per iniziare";
+    document.getElementById("goBtn").disabled=true;
+    document.getElementById("tabsBar").style.display="none";
+    document.getElementById("mainBody").innerHTML='<div class="center"><div class="c-icon">&#9678;</div><div class="c-title">Nessun cliente</div><div class="c-sub">Seleziona o aggiungi un cliente dalla sidebar.</div></div>';
+  }
+  renderList();
 }
 
 document.getElementById("addBtn").addEventListener("click",function(){
@@ -209,14 +212,16 @@ document.getElementById("addBtn").addEventListener("click",function(){
 document.getElementById("cancelBtn").addEventListener("click",function(){
   document.getElementById("addForm").style.display="none";
   document.getElementById("addBtn").style.display="flex";
-  document.getElementById("inName").value="";document.getElementById("inDesc").value="";
+  document.getElementById("inName").value="";
+  document.getElementById("inDesc").value="";
 });
 function doAdd(){
   var name=document.getElementById("inName").value.trim();if(!name)return;
   var desc=document.getElementById("inDesc").value.trim();
   var c={id:Date.now().toString(),name:name,desc:desc};
   clients.push(c);saveClients();
-  document.getElementById("inName").value="";document.getElementById("inDesc").value="";
+  document.getElementById("inName").value="";
+  document.getElementById("inDesc").value="";
   document.getElementById("addForm").style.display="none";
   document.getElementById("addBtn").style.display="flex";
   renderList();pickClient(c);
@@ -239,44 +244,50 @@ function fetchTrends(){
   loading=true;
   document.getElementById("goBtn").disabled=true;
   document.getElementById("tabsBar").style.display="none";
-  document.getElementById("mainBody").innerHTML='<div class="center"><div class="spin"></div><div class="c-title" style="margin-top:10px">Analisi in corso…</div><div class="c-sub">Sto cercando hashtag, audio virali e format per <strong>'+esc(sel.name)+'</strong></div></div>';
+  document.getElementById("mainBody").innerHTML='<div class="center"><div class="spin"></div><div class="c-title" style="margin-top:10px">Analisi in corso...</div><div class="c-sub">Sto cercando hashtag, audio virali e format per <strong>'+esc(sel.name)+'</strong></div></div>';
 
   var today=new Date().toLocaleDateString("it-IT",{day:"numeric",month:"long",year:"numeric"});
-  var nm=(sel.name||"").replace(/[\\"]/g," ").slice(0,80);
-  var dc=(sel.desc||"settore generico").replace(/[\\"]/g," ").replace(/\n/g," ").slice(0,250);
+  var nm=(sel.name||"").replace(/\n/g," ").slice(0,80);
+  var dc=(sel.desc||"settore generico").replace(/\n/g," ").slice(0,250);
 
-  var prompt="Sei un social media strategist. Oggi: "+today+". "
-    +"Cliente: "+nm+". Profilo: "+dc+". "
-    +"Genera trend social per questo cliente, separando Italia e internazionale. "
-    +"Rispondi SOLO con JSON valido (zero testo extra, zero backtick). "
-    +"Schema (3 trend per sezione, 12 totali):\n"
-    +'{"italy":{"meta":[{"title":"T","description":"D","hashtags":["#h1","#h2"],"format":"F","engagement":"virale","idea":"I"},{"title":"T","description":"D","hashtags":["#h1","#h2"],"format":"F","engagement":"alto","idea":"I"},{"title":"T","description":"D","hashtags":["#h1","#h2"],"format":"F","engagement":"medio","idea":"I"}],"tiktok":[{"title":"T","description":"D","hashtags":["#h1","#h2"],"trending_audio":["Canzone - Artista","Canzone2 - Artista2"],"format":"F","engagement":"virale","idea":"I"},{"title":"T","description":"D","hashtags":["#h1","#h2"],"trending_audio":["Canzone - Artista"],"format":"F","engagement":"alto","idea":"I"},{"title":"T","description":"D","hashtags":["#h1","#h2"],"trending_audio":["Canzone - Artista"],"format":"F","engagement":"medio","idea":"I"}]},"international":{"meta":[{"title":"T","description":"D","hashtags":["#h1","#h2"],"format":"F","engagement":"virale","idea":"I"},{"title":"T","description":"D","hashtags":["#h1","#h2"],"format":"F","engagement":"alto","idea":"I"},{"title":"T","description":"D","hashtags":["#h1","#h2"],"format":"F","engagement":"medio","idea":"I"}],"tiktok":[{"title":"T","description":"D","hashtags":["#h1","#h2"],"trending_audio":["Song - Artist"],"format":"F","engagement":"virale","idea":"I"},{"title":"T","description":"D","hashtags":["#h1","#h2"],"trending_audio":["Song - Artist"],"format":"F","engagement":"alto","idea":"I"},{"title":"T","description":"D","hashtags":["#h1","#h2"],"trending_audio":["Song - Artist"],"format":"F","engagement":"medio","idea":"I"}]}}\n'
-    +"Sostituisci: T=titolo trend reale, D=descrizione, #h=hashtag trending reale, F=formato (Reel/Carosello/Story/Video/Duetto/Stitch), I=idea concreta per il cliente, Canzone/Artist=audio TikTok virale reale. engagement: virale, alto, o medio.";
+  var trendItem={type:"object",required:["title","description","hashtags","format","engagement","idea"],properties:{title:{type:"string"},description:{type:"string"},hashtags:{type:"array",items:{type:"string"}},format:{type:"string"},engagement:{type:"string",enum:["virale","alto","medio"]},idea:{type:"string"}}};
+  var tiktokItem={type:"object",required:["title","description","hashtags","trending_audio","format","engagement","idea"],properties:{title:{type:"string"},description:{type:"string"},hashtags:{type:"array",items:{type:"string"}},trending_audio:{type:"array",items:{type:"string"}},format:{type:"string"},engagement:{type:"string",enum:["virale","alto","medio"]},idea:{type:"string"}}};
+  var mktSchema={type:"object",required:["meta","tiktok"],properties:{meta:{type:"array",minItems:3,maxItems:3,items:trendItem},tiktok:{type:"array",minItems:3,maxItems:3,items:tiktokItem}}};
 
-  fetch("/api/trends",{
+  var tool={
+    name:"pubblica_trend",
+    description:"Pubblica i trend social trovati per il cliente",
+    input_schema:{type:"object",required:["italy","international"],properties:{italy:mktSchema,international:mktSchema}}
+  };
+
+  var prompt="Sei un social media strategist. Oggi: "+today+". Cliente: "+nm+". Profilo: "+dc+". Usa lo strumento pubblica_trend per restituire 3 trend per sezione (italy.meta, italy.tiktok, international.meta, international.tiktok) con hashtag reali trending, audio TikTok virali reali, formato efficace e idea contenuto specifica per questo cliente.";
+
+  fetch(WORKER,{
     method:"POST",
     headers:{"Content-Type":"application/json"},
     body:JSON.stringify({
       model:"claude-haiku-4-5-20251001",
-      max_tokens:1800,
+      max_tokens:2000,
+      tools:[tool],
+      tool_choice:{type:"any"},
       messages:[{role:"user",content:prompt}]
     })
   })
   .then(function(r){
-    if(!r.ok)return r.json().then(function(d){throw new Error("[HTTP "+r.status+"] "+(d.error?d.error.message:JSON.stringify(d)));});
+    if(!r.ok)return r.json().then(function(d){throw new Error("["+r.status+"] "+(d.error?d.error.message:JSON.stringify(d)));});
     return r.json();
   })
   .then(function(data){
-    var raw="";
-    (data.content||[]).forEach(function(b){if(b.type==="text")raw+=b.text;});
-    raw=raw.replace(/```json/gi,"").replace(/```/g,"").trim();
-    var s=raw.indexOf("{"),e=raw.lastIndexOf("}");
-    if(s<0||e<0)throw new Error("Risposta non valida dal modello.");
-    var parsed=JSON.parse(raw.slice(s,e+1));
+    var toolBlock=null;
+    (data.content||[]).forEach(function(b){if(b.type==="tool_use")toolBlock=b;});
+    if(!toolBlock||!toolBlock.input)throw new Error("Nessun dato ricevuto. Risposta: "+JSON.stringify(data.content).slice(0,200));
+    var parsed=toolBlock.input;
+    if(!parsed.italy||!parsed.international)throw new Error("Struttura non valida: "+JSON.stringify(parsed).slice(0,200));
     saveTrends(sel.id,parsed);
-    document.getElementById("tabsBar").style.display="flex";
+    renderList();
     document.getElementById("tbMeta").textContent="Ultima analisi: "+fmtDate(new Date().toISOString())+" alle "+fmtTime(new Date().toISOString());
-    renderList();renderTrends(parsed,false);
+    document.getElementById("tabsBar").style.display="flex";
+    renderTrends(parsed,false);
   })
   .catch(function(err){
     document.getElementById("mainBody").innerHTML='<div class="err"><strong>Errore.</strong><br><br>'+esc(err.message)+'</div>';
@@ -290,25 +301,25 @@ function renderTrends(data,fromCache){
   if(!market){document.getElementById("mainBody").innerHTML='<div class="err">Nessun dato per questa scheda.</div>';return;}
   var cc=getCached(sel&&sel.id);
   var html='<div class="up-bar"><div class="up-info"><span class="live-dot"></span>'
-    +esc(cc?fmtDate(cc.date):"")+" alle "+esc(cc?fmtTime(cc.date):"")
+    +esc(cc?fmtDate(cc.date):"")+(cc?" alle "+esc(fmtTime(cc.date)):"")
     +(fromCache?' <span class="cached-badge">dalla cache</span>':'')+'</div>'
-    +'<button class="ref-btn" onclick="fetchTrends()">↻ Aggiorna</button></div>';
+    +'<button class="ref-btn" onclick="fetchTrends()">&#8635; Aggiorna</button></div>';
   ["meta","tiktok"].forEach(function(pf){
     var items=market[pf]||[];if(!items.length)return;
-    var lbl=pf==="meta"?"Meta — Instagram / Facebook":"TikTok";
+    var lbl=pf==="meta"?"Meta - Instagram / Facebook":"TikTok";
     var bc=pf==="meta"?"pf-meta":"pf-ttk";
     html+='<div class="pf-sec"><div class="pf-head"><span class="pf-badge '+bc+'">'+lbl+'</span><span class="pf-ct">'+items.length+' trend</span></div><div class="grid">';
     items.forEach(function(t){
       var ec=t.engagement==="virale"?"ev":t.engagement==="alto"?"ea":"em";
-      var hashP=(t.hashtags||[]).map(function(h){return'<span class="pill-hash">'+esc(h)+'</span>';}).join("");
-      var audioP=(t.trending_audio||[]).map(function(a){return'<span class="pill-audio">♪ '+esc(a)+'</span>';}).join("");
-      var fmtP=t.format?'<span class="pill-fmt">'+esc(t.format)+'</span>':"";
+      var hp=(t.hashtags||[]).map(function(h){return'<span class="pill-hash">'+esc(h)+'</span>';}).join("");
+      var ap=(t.trending_audio||[]).map(function(a){return'<span class="pill-audio">&#9834; '+esc(a)+'</span>';}).join("");
+      var fp=t.format?'<span class="pill-fmt">'+esc(t.format)+'</span>':"";
       html+='<div class="card"><div class="card-top"><div class="card-title">'+esc(t.title||"")+'</div><span class="eng '+ec+'">'+esc(t.engagement||"medio")+'</span></div>'
         +'<div class="card-desc">'+esc(t.description||"")+'</div>';
-      if(hashP)html+='<div class="pill-section"><div class="pill-label">Hashtag trending</div><div class="pills">'+hashP+'</div></div>';
-      if(audioP)html+='<div class="pill-section"><div class="pill-label">Audio virale TikTok</div><div class="pills">'+audioP+'</div></div>';
-      if(fmtP)html+='<div class="pill-section"><div class="pill-label">Format consigliato</div><div class="pills">'+fmtP+'</div></div>';
-      if(t.idea)html+='<div class="idea-box"><div class="idea-lbl">💡 Idea contenuto</div><div class="idea-txt">'+esc(t.idea)+'</div></div>';
+      if(hp)html+='<div class="pill-section"><div class="pill-label">Hashtag trending</div><div class="pills">'+hp+'</div></div>';
+      if(ap)html+='<div class="pill-section"><div class="pill-label">Audio virale TikTok</div><div class="pills">'+ap+'</div></div>';
+      if(fp)html+='<div class="pill-section"><div class="pill-label">Format consigliato</div><div class="pills">'+fp+'</div></div>';
+      if(t.idea)html+='<div class="idea-box"><div class="idea-lbl">Idea contenuto</div><div class="idea-txt">'+esc(t.idea)+'</div></div>';
       html+='</div>';
     });
     html+='</div></div>';

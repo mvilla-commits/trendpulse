@@ -250,26 +250,43 @@ function fetchTrends(){
   var nm=(sel.name||"").replace(/\n/g," ").slice(0,80);
   var dc=(sel.desc||"settore generico").replace(/\n/g," ").slice(0,250);
 
-  var trendItem={type:"object",required:["title","description","hashtags","format","engagement","idea"],properties:{title:{type:"string"},description:{type:"string"},hashtags:{type:"array",items:{type:"string"}},format:{type:"string"},engagement:{type:"string",enum:["virale","alto","medio"]},idea:{type:"string"}}};
-  var tiktokItem={type:"object",required:["title","description","hashtags","trending_audio","format","engagement","idea"],properties:{title:{type:"string"},description:{type:"string"},hashtags:{type:"array",items:{type:"string"}},trending_audio:{type:"array",items:{type:"string"}},format:{type:"string"},engagement:{type:"string",enum:["virale","alto","medio"]},idea:{type:"string"}}};
-  var mktSchema={type:"object",required:["meta","tiktok"],properties:{meta:{type:"array",minItems:3,maxItems:3,items:trendItem},tiktok:{type:"array",minItems:3,maxItems:3,items:tiktokItem}}};
-
   var tool={
     name:"pubblica_trend",
-    description:"Pubblica i trend social trovati per il cliente",
-    input_schema:{type:"object",required:["italy","international"],properties:{italy:mktSchema,international:mktSchema}}
+    description:"Genera e pubblica trend social media per un cliente",
+    input_schema:{
+      type:"object",
+      required:["italy","international"],
+      properties:{
+        italy:{
+          type:"object",
+          required:["meta","tiktok"],
+          properties:{
+            meta:{type:"array",items:{type:"object",properties:{title:{type:"string"},description:{type:"string"},hashtags:{type:"array",items:{type:"string"}},format:{type:"string"},engagement:{type:"string"},idea:{type:"string"}}}},
+            tiktok:{type:"array",items:{type:"object",properties:{title:{type:"string"},description:{type:"string"},hashtags:{type:"array",items:{type:"string"}},trending_audio:{type:"array",items:{type:"string"}},format:{type:"string"},engagement:{type:"string"},idea:{type:"string"}}}}
+          }
+        },
+        international:{
+          type:"object",
+          required:["meta","tiktok"],
+          properties:{
+            meta:{type:"array",items:{type:"object",properties:{title:{type:"string"},description:{type:"string"},hashtags:{type:"array",items:{type:"string"}},format:{type:"string"},engagement:{type:"string"},idea:{type:"string"}}}},
+            tiktok:{type:"array",items:{type:"object",properties:{title:{type:"string"},description:{type:"string"},hashtags:{type:"array",items:{type:"string"}},trending_audio:{type:"array",items:{type:"string"}},format:{type:"string"},engagement:{type:"string"},idea:{type:"string"}}}}
+          }
+        }
+      }
+    }
   };
 
-  var prompt="Sei un social media strategist. Oggi: "+today+". Cliente: "+nm+". Profilo: "+dc+". Usa lo strumento pubblica_trend per restituire 3 trend per sezione (italy.meta, italy.tiktok, international.meta, international.tiktok) con hashtag reali trending, audio TikTok virali reali, formato efficace e idea contenuto specifica per questo cliente.";
+  var prompt="Sei un social media strategist. Oggi: "+today+". Cliente: "+nm+". Profilo: "+dc+". Chiama lo strumento pubblica_trend con 3 trend per sezione (italy.meta, italy.tiktok, international.meta, international.tiktok). Ogni trend deve avere hashtag reali trending, audio TikTok virali reali, formato (Reel/Carosello/Video/Duetto), engagement (virale/alto/medio) e idea contenuto specifica per il cliente.";
 
   fetch(WORKER,{
     method:"POST",
     headers:{"Content-Type":"application/json"},
     body:JSON.stringify({
-      model:"claude-haiku-4-5-20251001",
-      max_tokens:2000,
+      model:"claude-sonnet-4-6",
+      max_tokens:4000,
       tools:[tool],
-      tool_choice:{type:"any"},
+      tool_choice:{type:"tool",name:"pubblica_trend"},
       messages:[{role:"user",content:prompt}]
     })
   })

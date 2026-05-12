@@ -7,12 +7,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#fff;--bg2:#f7f6f3;--bg3:#eeecea;--tx:#1a1a1a;--tx2:#6b6b6b;--tx3:#aaa;--br:rgba(0,0,0,.1);--br2:rgba(0,0,0,.2);--ac:#D85A30;--r:8px;--rl:12px;}
+:root{--bg:#fff;--bg2:#f7f6f3;--bg3:#eeecea;--tx:#1a1a1a;--tx2:#6b6b6b;--tx3:#aaa;--br:rgba(0,0,0,.1);--br2:rgba(0,0,0,.2);--ac:#D85A30;--r:8px;--rl:12px}
 html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--tx)}
 .app{display:flex;height:100vh;overflow:hidden}
+/* SIDEBAR */
 .sb{width:252px;min-width:252px;background:var(--bg2);border-right:1px solid var(--br);display:flex;flex-direction:column;overflow:hidden}
 .sb-head{padding:20px 16px 14px;border-bottom:1px solid var(--br)}
-.logo{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--tx)}.logo span{color:var(--ac)}
+.logo{font-family:'Syne',sans-serif;font-size:16px;font-weight:800}.logo span{color:var(--ac)}
 .logo-sub{font-size:11px;color:var(--tx3);margin-top:2px}
 .sb-label{padding:14px 16px 6px;font-size:10px;font-weight:500;color:var(--tx3);text-transform:uppercase;letter-spacing:.9px}
 .cl-list{flex:1;overflow-y:auto;padding:0 8px}
@@ -25,17 +26,20 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
 .cl-date{font-size:10px;color:var(--tx3);margin-top:1px}
 .cl-del{opacity:0;font-size:17px;color:var(--tx3);background:none;border:none;cursor:pointer;padding:0 4px;line-height:1;flex-shrink:0}
 .cl-item:hover .cl-del{opacity:1}
-.add-btn{margin:8px;padding:9px 12px;background:none;border:1px solid var(--br2);border-radius:var(--r);font-size:12px;color:var(--tx2);cursor:pointer;display:flex;align-items:center;gap:6px;font-family:'DM Sans',sans-serif;transition:background .12s}
+.sb-footer{padding:10px}
+.add-btn{width:100%;padding:9px 12px;background:none;border:1px solid var(--br2);border-radius:var(--r);font-size:12px;color:var(--tx2);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;font-family:'DM Sans',sans-serif;transition:background .12s}
 .add-btn:hover{background:var(--bg3)}
-.add-form{padding:10px;border-top:1px solid var(--br);display:none}
-.add-form input,.add-form textarea{width:100%;border:1px solid var(--br2);border-radius:var(--r);padding:8px 10px;font-size:12px;background:var(--bg);color:var(--tx);margin-bottom:6px;font-family:'DM Sans',sans-serif;resize:none;outline:none}
+.add-form{display:none;flex-direction:column;gap:6px;margin-bottom:8px}
+.add-form input,.add-form textarea{width:100%;border:1px solid var(--br2);border-radius:var(--r);padding:8px 10px;font-size:12px;background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;resize:none;outline:none}
 .add-form textarea{height:64px}
 .add-form input:focus,.add-form textarea:focus{border-color:var(--ac)}
 .fb{display:flex;gap:6px}
 .btn-ok{flex:1;padding:8px;background:var(--ac);border:none;border-radius:var(--r);font-size:12px;color:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500}
 .btn-no{flex:1;padding:8px;background:none;border:1px solid var(--br2);border-radius:var(--r);font-size:12px;color:var(--tx2);cursor:pointer;font-family:'DM Sans',sans-serif}
+/* MAIN */
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden}
 .topbar{padding:16px 24px;border-bottom:1px solid var(--br);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-shrink:0}
+.tb-left{min-width:0;flex:1}
 .tb-title{font-family:'Syne',sans-serif;font-size:19px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tb-meta{font-size:12px;color:var(--tx2);margin-top:2px}
 .go-btn{padding:10px 20px;background:var(--ac);border:none;border-radius:var(--r);font-size:13px;color:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;white-space:nowrap;flex-shrink:0;display:flex;align-items:center;gap:7px;transition:opacity .15s}
@@ -44,6 +48,12 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
 .tab{padding:12px 0;margin-right:24px;font-size:13px;font-weight:500;cursor:pointer;border:none;border-bottom:2px solid transparent;background:none;color:var(--tx2);font-family:'DM Sans',sans-serif;transition:color .12s}
 .tab.on{color:var(--tx);border-bottom-color:var(--ac)}
 .body{flex:1;overflow-y:auto;padding:22px 24px}
+/* SOURCE META BAR */
+.src-bar{background:var(--bg2);border:1px solid var(--br);border-radius:var(--r);padding:10px 14px;margin-bottom:20px;font-size:11px;color:var(--tx2);display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.src-chip{padding:2px 8px;border-radius:20px;font-size:10px;font-weight:500}
+.src-ok{background:#d8f0e8;color:#1a6b4a}
+.src-no{background:#eeecea;color:#666}
+/* CARDS */
 .pf-sec{margin-bottom:32px}
 .pf-head{display:flex;align-items:center;gap:10px;margin-bottom:16px}
 .pf-badge{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:500}
@@ -52,39 +62,63 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
 .card{background:var(--bg);border:1px solid var(--br);border-radius:var(--rl);padding:16px;transition:border-color .15s}
 .card:hover{border-color:var(--br2)}
-.card-top{display:flex;justify-content:space-between;gap:8px;margin-bottom:8px}
+.card-top{display:flex;justify-content:space-between;gap:8px;margin-bottom:6px}
 .card-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;line-height:1.3}
 .eng{padding:3px 8px;border-radius:20px;font-size:10px;font-weight:500;white-space:nowrap;flex-shrink:0}
 .ev{background:#e5f2d8;color:#376010}.ea{background:#faecd8;color:#7a4a0a}.em{background:#eeecea;color:#555}
+/* Confidence badge */
+.conf-row{display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.conf-badge{font-size:10px;font-weight:500;padding:2px 8px;border-radius:20px}
+.conf-verified{background:#d8f0e8;color:#1a6b4a}
+.conf-weak{background:#faecd8;color:#7a4a0a}
+.conf-ai{background:#f0edfb;color:#5a3a8a}
+.conf-bar-wrap{flex:1;height:3px;background:var(--bg3);border-radius:2px;overflow:hidden}
+.conf-bar{height:100%;border-radius:2px;transition:width .3s}
 .card-desc{font-size:12px;color:var(--tx2);line-height:1.55;margin-bottom:10px}
-.pill-section{margin-bottom:8px}
-.pill-label{font-size:10px;font-weight:500;color:var(--tx3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px}
+.pill-sec{margin-bottom:8px}
+.pill-lbl{font-size:10px;font-weight:500;color:var(--tx3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px}
 .pills{display:flex;flex-wrap:wrap;gap:4px}
-.pill-hash{font-size:11px;color:#1155a3;background:#deedfb;padding:3px 9px;border-radius:20px;font-weight:500}
-.pill-audio{font-size:11px;color:#7a2d8a;background:#f5e8fb;padding:3px 9px;border-radius:20px;font-weight:500}
-.pill-fmt{font-size:11px;color:#1a6b4a;background:#d8f0e8;padding:3px 9px;border-radius:20px;font-weight:500}
-.idea-box{background:var(--bg2);border-left:2px solid var(--ac);border-radius:0 var(--r) var(--r) 0;padding:9px 11px;margin-bottom:10px}
+.ph{font-size:11px;color:#1155a3;background:#deedfb;padding:3px 9px;border-radius:20px;font-weight:500}
+.pa{font-size:11px;color:#7a2d8a;background:#f5e8fb;padding:3px 9px;border-radius:20px;font-weight:500}
+.pf2{font-size:11px;color:#1a6b4a;background:#d8f0e8;padding:3px 9px;border-radius:20px;font-weight:500}
+.audio-dir{font-size:11px;color:#7a4a0a;background:#faecd8;padding:3px 9px;border-radius:20px;font-weight:500}
+.idea-box{background:var(--bg2);border-left:2px solid var(--ac);border-radius:0 var(--r) var(--r) 0;padding:9px 11px;margin-bottom:8px}
 .idea-lbl{font-size:10px;font-weight:500;color:var(--ac);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
 .idea-txt{font-size:12px;line-height:1.45}
+.basis-box{font-size:11px;color:var(--tx3);line-height:1.4;margin-bottom:8px;font-style:italic}
+.sources-row{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.src-link{font-size:10px;color:#1155a3;background:#deedfb;padding:2px 7px;border-radius:20px;text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px;display:inline-block}
+.checked{font-size:10px;color:var(--tx3);margin-top:6px}
+/* STATES */
 .center{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:280px;gap:12px;text-align:center;color:var(--tx2)}
-.c-icon{font-size:38px;opacity:.2}.c-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--tx)}
+.c-icon{font-size:38px;opacity:.2}
+.c-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--tx)}
 .c-sub{font-size:13px;max-width:320px;line-height:1.6}
 .spin{width:32px;height:32px;border:2px solid var(--br);border-top-color:var(--ac);border-radius:50%;animation:sp .8s linear infinite}
 @keyframes sp{to{transform:rotate(360deg)}}
-.up-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:8px}
+.up-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px}
 .up-info{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--tx2)}
-.live-dot{width:6px;height:6px;border-radius:50%;background:#4a8c1c;flex-shrink:0}
-.cached-badge{font-size:11px;color:var(--tx3);background:var(--bg2);border:1px solid var(--br);padding:3px 10px;border-radius:20px}
+.ldot{width:6px;height:6px;border-radius:50%;background:#4a8c1c;flex-shrink:0}
+.cbadge{font-size:11px;color:var(--tx3);background:var(--bg2);border:1px solid var(--br);padding:3px 10px;border-radius:20px}
 .ref-btn{font-size:12px;color:var(--tx2);background:none;border:1px solid var(--br2);padding:5px 12px;border-radius:var(--r);cursor:pointer;font-family:'DM Sans',sans-serif}
-.err{background:#fdf0ee;border:1px solid #f5c8c0;border-radius:var(--r);padding:14px 16px;font-size:13px;color:#922;line-height:1.6;margin-top:16px}
+.err{background:#fdf0ee;border:1px solid #f5c8c0;border-radius:var(--r);padding:16px;font-size:13px;color:#922;line-height:1.7;margin-top:16px}
+/* PDF FAB */
 .pdf-fab{position:fixed;bottom:24px;right:24px;padding:11px 18px;background:var(--tx);border:none;border-radius:30px;font-size:12px;font-weight:500;color:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;display:none;align-items:center;gap:7px;box-shadow:0 4px 16px rgba(0,0,0,.18);transition:opacity .15s;z-index:99}
 .pdf-fab:hover{opacity:.82}
-@media print{.sb,.topbar,.tabs,.pdf-fab{display:none!important}.body{overflow:visible!important}.app{display:block!important}.main{overflow:visible!important}html,body{height:auto!important}.pdf-header{display:block!important}}
-.pdf-header{display:none;padding:0 0 24px;border-bottom:2px solid var(--ac);margin-bottom:28px}
-.pdf-header h1{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--tx)}
+/* PRINT */
+@media print{
+  .sb,.topbar,.tabs,.pdf-fab,.up-bar,.ref-btn{display:none!important}
+  .body{overflow:visible!important;padding:0!important}
+  .app{display:block!important}.main{overflow:visible!important}
+  html,body{height:auto!important}
+  .pdf-header{display:block!important}
+  .card{break-inside:avoid;page-break-inside:avoid}
+}
+.pdf-header{display:none;padding:0 0 20px;border-bottom:2px solid var(--ac);margin-bottom:24px}
+.pdf-header h1{font-family:'Syne',sans-serif;font-size:20px;font-weight:800}
 .pdf-header h1 span{color:var(--ac)}
-.pdf-header p{font-size:13px;color:var(--tx2);margin-top:4px}
-.pdf-section-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin:28px 0 14px;padding-bottom:6px;border-bottom:1px solid var(--br2);color:var(--tx)}
+.pdf-header p{font-size:12px;color:var(--tx2);margin-top:4px}
+.pdf-section-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin:24px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--br2)}
 ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--br2);border-radius:4px}
 </style>
 </head>
@@ -97,23 +131,25 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
     </div>
     <div class="sb-label">Clienti</div>
     <div class="cl-list" id="clList"></div>
-    <button class="add-btn" id="addBtn">
-      <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-      Aggiungi cliente
-    </button>
-    <div class="add-form" id="addForm">
-      <input type="text" id="inName" placeholder="Nome cliente o brand..."/>
-      <textarea id="inDesc" placeholder="Settore, prodotti, target, tono di voce..."></textarea>
-      <div class="fb">
-        <button class="btn-ok" id="saveBtn">Salva</button>
-        <button class="btn-no" id="cancelBtn">Annulla</button>
+    <div class="sb-footer">
+      <div class="add-form" id="addForm">
+        <input type="text" id="inName" placeholder="Nome cliente o brand..."/>
+        <textarea id="inDesc" placeholder="Settore, prodotti, target, tono di voce..."></textarea>
+        <div class="fb">
+          <button class="btn-ok" id="saveBtn">Salva</button>
+          <button class="btn-no" id="cancelBtn">Annulla</button>
+        </div>
       </div>
+      <button class="add-btn" id="addBtn">
+        <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Aggiungi cliente
+      </button>
     </div>
   </div>
 
   <div class="main">
     <div class="topbar">
-      <div style="min-width:0">
+      <div class="tb-left">
         <div class="tb-title" id="tbTitle">Seleziona un cliente</div>
         <div class="tb-meta" id="tbMeta">Aggiungi un profilo cliente per iniziare</div>
       </div>
@@ -130,120 +166,120 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
       <div class="center">
         <div class="c-icon">&#9678;</div>
         <div class="c-title">Benvenuto in TrendPulse</div>
-        <div class="c-sub">Aggiungi un cliente e clicca "Analizza trend" per scoprire hashtag del giorno, audio virali e format efficaci su Instagram e TikTok.</div>
+        <div class="c-sub">Aggiungi un cliente e clicca "Analizza trend" per scoprire contenuti, hashtag e format su Instagram e TikTok.</div>
       </div>
     </div>
   </div>
 </div>
 
 <button class="pdf-fab" id="pdfBtn">
-  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 1h7l3 3v9a1 1 0 01-1 1H2a1 1 0 01-1-1V2a1 1 0 011-1z" stroke="currentColor" stroke-width="1.3"/><path d="M9 1v3h3M4 7h6M4 9.5h6M4 4.5h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+  <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 1h7l3 3v9a1 1 0 01-1 1H2a1 1 0 01-1-1V2a1 1 0 011-1z" stroke="currentColor" stroke-width="1.3"/><path d="M9 1v3h3M4 7h6M4 9.5h6M4 4.5h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
   Esporta PDF
 </button>
 
-<!-- Hidden print header -->
 <div class="pdf-header" id="pdfHeader">
   <h1>trend<span>pulse</span></h1>
   <p id="pdfMeta"></p>
 </div>
 
 <script>
-var WORKER = "https://trendpluse.m-villa-a79.workers.dev";
-var LS_CL = "tp_clients_v3", LS_TR = "tp_trends_v3";
-var COLS = ["#D85A30","#185FA5","#1D9E75","#993556","#534AB7","#BA7517","#639922","#D4537E"];
-var clients = [], sel = null, trendsCache = {}, tab = "italy", loading = false;
+var WORKER  = "https://trendpluse.m-villa-a79.workers.dev";
+var LS_CL   = "tp_cl_v7";
+var LS_TR   = "tp_tr_v7";
+var COLS    = ["#D85A30","#185FA5","#1D9E75","#993556","#534AB7","#BA7517","#639922","#D4537E"];
+var clients = [], sel = null, cache = {}, tab = "italy", busy = false;
 
-function ini(n){return(n||"?").trim().split(/\s+/).map(function(w){return w[0]||"";}).join("").toUpperCase().slice(0,2)||"?";}
-function col(id){return COLS[parseInt(id,10)%COLS.length];}
+function ini(n){return(n||"").trim().split(/\s+/).map(function(w){return w[0]||"";}).join("").toUpperCase().slice(0,2)||"?";}
+function col(id){return COLS[Math.abs(parseInt(id,10))%COLS.length];}
 function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
-function fmtDate(iso){try{return new Date(iso).toLocaleDateString("it-IT",{day:"numeric",month:"long",year:"numeric"});}catch(e){return "";}}
-function fmtTime(iso){try{return new Date(iso).toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"});}catch(e){return "";}}
+function fd(iso){try{return new Date(iso).toLocaleDateString("it-IT",{day:"numeric",month:"long",year:"numeric"});}catch(e){return "";}}
+function ft(iso){try{return new Date(iso).toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"});}catch(e){return "";}}
 
-function saveClients(){try{localStorage.setItem(LS_CL,JSON.stringify(clients));}catch(e){}}
-function loadClients(){try{clients=JSON.parse(localStorage.getItem(LS_CL)||"[]");}catch(e){clients=[];}}
-function saveTrends(id,data){
+function saveCl(){try{localStorage.setItem(LS_CL,JSON.stringify(clients));}catch(e){}}
+function loadCl(){try{clients=JSON.parse(localStorage.getItem(LS_CL)||"[]");}catch(e){clients=[];}}
+function saveTr(id,data){
   try{
     var all={};try{all=JSON.parse(localStorage.getItem(LS_TR)||"{}");}catch(e){}
-    all[id]={data:data,date:new Date().toISOString()};
+    all[id]={data:data,ts:new Date().toISOString()};
     localStorage.setItem(LS_TR,JSON.stringify(all));
-    trendsCache[id]=all[id];
+    cache[id]=all[id];
   }catch(e){}
 }
-function loadTrends(){try{trendsCache=JSON.parse(localStorage.getItem(LS_TR)||"{}");}catch(e){trendsCache={};}}
-function getCached(id){return id?trendsCache[id]||null:null;}
+function loadTr(){try{cache=JSON.parse(localStorage.getItem(LS_TR)||"{}");}catch(e){cache={};}}
+function getCa(id){return id&&cache[id]?cache[id]:null;}
 
 function renderList(){
   var el=document.getElementById("clList");
   if(!clients.length){el.innerHTML='<div class="cl-empty">Nessun cliente.<br>Aggiungine uno.</div>';return;}
   el.innerHTML=clients.map(function(c){
-    var cc=getCached(c.id);
+    var ca=getCa(c.id);
     return '<div class="cl-item'+(sel&&sel.id===c.id?" active":"")+'" data-id="'+c.id+'">'
       +'<div class="cl-av" style="background:'+col(c.id)+'">'+ini(c.name)+'</div>'
       +'<div class="cl-info"><div class="cl-name">'+esc(c.name)+'</div>'
-      +'<div class="cl-date">'+(cc?fmtDate(cc.date):"Nessuna ricerca")+'</div></div>'
+      +'<div class="cl-date">'+(ca?fd(ca.ts):"Nessuna ricerca")+'</div></div>'
       +'<button class="cl-del" data-del="'+c.id+'">&times;</button></div>';
   }).join("");
   el.querySelectorAll(".cl-item").forEach(function(item){
     item.addEventListener("click",function(e){
       var d=e.target.closest(".cl-del");
-      if(d){delClient(d.dataset.del);return;}
+      if(d){delCl(d.dataset.del);return;}
       var f=clients.find(function(c){return c.id===item.dataset.id;});
-      if(f)pickClient(f);
+      if(f)pick(f);
     });
   });
 }
 
-function pickClient(c){
+function pick(c){
   sel=c;renderList();
   document.getElementById("tbTitle").textContent=c.name;
   document.getElementById("goBtn").disabled=false;
-  var cc=getCached(c.id);
-  if(cc){
-    document.getElementById("tbMeta").textContent="Ultima analisi: "+fmtDate(cc.date)+" alle "+fmtTime(cc.date);
+  var ca=getCa(c.id);
+  if(ca){
+    document.getElementById("tbMeta").textContent="Ultima analisi: "+fd(ca.ts)+" alle "+ft(ca.ts);
     document.getElementById("tabsBar").style.display="flex";
-    renderTrends(cc.data,true);
+    renderTrends(ca.data,true);
   }else{
     document.getElementById("tbMeta").textContent=c.desc?c.desc.slice(0,80)+(c.desc.length>80?"...":""):'Clicca "Analizza trend" per iniziare';
     document.getElementById("tabsBar").style.display="none";
-    document.getElementById("mainBody").innerHTML='<div class="center"><div class="c-icon">&#9672;</div><div class="c-title">Pronto per '+esc(c.name)+'</div><div class="c-sub">Clicca "Analizza trend" per trovare hashtag, audio virali TikTok e format efficaci.</div></div>';
+    document.getElementById("mainBody").innerHTML='<div class="center"><div class="c-icon">&#9672;</div><div class="c-title">Pronto per '+esc(c.name)+'</div><div class="c-sub">Clicca "Analizza trend" per trovare contenuti, hashtag e format efficaci.</div></div>';
+    document.getElementById("pdfBtn").style.display="none";
   }
 }
 
-function delClient(id){
-  clients=clients.filter(function(c){return c.id!==id;});saveClients();
-  try{var all=JSON.parse(localStorage.getItem(LS_TR)||"{}");delete all[id];localStorage.setItem(LS_TR,JSON.stringify(all));delete trendsCache[id];}catch(e){}
-  if(sel&&sel.id===id){
-    sel=null;
-    document.getElementById("tbTitle").textContent="Seleziona un cliente";
-    document.getElementById("tbMeta").textContent="Aggiungi un profilo cliente per iniziare";
-    document.getElementById("goBtn").disabled=true;
-    document.getElementById("tabsBar").style.display="none";
-    document.getElementById("mainBody").innerHTML='<div class="center"><div class="c-icon">&#9678;</div><div class="c-title">Nessun cliente</div><div class="c-sub">Seleziona o aggiungi un cliente dalla sidebar.</div></div>';
-  }
-  renderList();
+function delCl(id){
+  clients=clients.filter(function(c){return c.id!==id;});saveCl();
+  try{var all=JSON.parse(localStorage.getItem(LS_TR)||"{}");delete all[id];localStorage.setItem(LS_TR,JSON.stringify(all));delete cache[id];}catch(e){}
+  if(sel&&sel.id===id){sel=null;resetMain();}renderList();
+}
+
+function resetMain(){
+  document.getElementById("tbTitle").textContent="Seleziona un cliente";
+  document.getElementById("tbMeta").textContent="Aggiungi un profilo cliente per iniziare";
+  document.getElementById("goBtn").disabled=true;
+  document.getElementById("tabsBar").style.display="none";
+  document.getElementById("pdfBtn").style.display="none";
+  document.getElementById("mainBody").innerHTML='<div class="center"><div class="c-icon">&#9678;</div><div class="c-title">Nessun cliente</div><div class="c-sub">Seleziona o aggiungi un cliente dalla sidebar.</div></div>';
 }
 
 document.getElementById("addBtn").addEventListener("click",function(){
-  document.getElementById("addForm").style.display="block";
+  document.getElementById("addForm").style.display="flex";
   document.getElementById("addBtn").style.display="none";
   document.getElementById("inName").focus();
 });
 document.getElementById("cancelBtn").addEventListener("click",function(){
   document.getElementById("addForm").style.display="none";
   document.getElementById("addBtn").style.display="flex";
-  document.getElementById("inName").value="";
-  document.getElementById("inDesc").value="";
+  document.getElementById("inName").value="";document.getElementById("inDesc").value="";
 });
 function doAdd(){
   var name=document.getElementById("inName").value.trim();if(!name)return;
   var desc=document.getElementById("inDesc").value.trim();
   var c={id:Date.now().toString(),name:name,desc:desc};
-  clients.push(c);saveClients();
-  document.getElementById("inName").value="";
-  document.getElementById("inDesc").value="";
+  clients.push(c);saveCl();
+  document.getElementById("inName").value="";document.getElementById("inDesc").value="";
   document.getElementById("addForm").style.display="none";
   document.getElementById("addBtn").style.display="flex";
-  renderList();pickClient(c);
+  renderList();pick(c);
 }
 document.getElementById("saveBtn").addEventListener("click",doAdd);
 document.getElementById("inName").addEventListener("keydown",function(e){if(e.key==="Enter")doAdd();});
@@ -253,162 +289,143 @@ document.getElementById("tabsBar").addEventListener("click",function(e){
   tab=btn.dataset.t;
   document.querySelectorAll(".tab").forEach(function(t){t.classList.remove("on");});
   btn.classList.add("on");
-  var cc=getCached(sel&&sel.id);if(cc)renderTrends(cc.data,true);
+  var ca=getCa(sel&&sel.id);if(ca)renderTrends(ca.data,true);
 });
 
 document.getElementById("goBtn").addEventListener("click",fetchTrends);
 
 function fetchTrends(){
-  if(!sel||loading)return;
-  loading=true;
+  if(!sel||busy)return;
+  busy=true;
   document.getElementById("goBtn").disabled=true;
   document.getElementById("tabsBar").style.display="none";
-  document.getElementById("mainBody").innerHTML='<div class="center"><div class="spin"></div><div class="c-title" style="margin-top:10px">Analisi in corso...</div><div class="c-sub">Sto cercando hashtag, audio virali e format per <strong>'+esc(sel.name)+'</strong></div></div>';
+  document.getElementById("pdfBtn").style.display="none";
+  document.getElementById("mainBody").innerHTML='<div class="center"><div class="spin"></div><div class="c-title" style="margin-top:10px">Analisi in corso...</div><div class="c-sub">Raccolta segnali da fonti esterne e generazione trend per <strong>'+esc(sel.name)+'</strong></div></div>';
 
-  var today=new Date().toLocaleDateString("it-IT",{day:"numeric",month:"long",year:"numeric"});
-  var nm=(sel.name||"").replace(/\n/g," ").slice(0,80);
-  var dc=(sel.desc||"settore generico").replace(/\n/g," ").slice(0,250);
-
-  var tool={
-    name:"pubblica_trend",
-    description:"Genera e pubblica trend social media per un cliente",
-    input_schema:{
-      type:"object",
-      required:["italy","international"],
-      properties:{
-        italy:{
-          type:"object",
-          required:["meta","tiktok"],
-          properties:{
-            meta:{type:"array",items:{type:"object",properties:{title:{type:"string"},description:{type:"string"},hashtags:{type:"array",items:{type:"string"}},format:{type:"string"},engagement:{type:"string"},idea:{type:"string"}}}},
-            tiktok:{type:"array",items:{type:"object",properties:{title:{type:"string"},description:{type:"string"},hashtags:{type:"array",items:{type:"string"}},trending_audio:{type:"array",items:{type:"string"}},format:{type:"string"},engagement:{type:"string"},idea:{type:"string"}}}}
-          }
-        },
-        international:{
-          type:"object",
-          required:["meta","tiktok"],
-          properties:{
-            meta:{type:"array",items:{type:"object",properties:{title:{type:"string"},description:{type:"string"},hashtags:{type:"array",items:{type:"string"}},format:{type:"string"},engagement:{type:"string"},idea:{type:"string"}}}},
-            tiktok:{type:"array",items:{type:"object",properties:{title:{type:"string"},description:{type:"string"},hashtags:{type:"array",items:{type:"string"}},trending_audio:{type:"array",items:{type:"string"}},format:{type:"string"},engagement:{type:"string"},idea:{type:"string"}}}}
-          }
-        }
-      }
-    }
-  };
-
-  var prompt="Sei un social media strategist. Oggi: "+today+". Cliente: "+nm+". Profilo: "+dc+". Chiama lo strumento pubblica_trend con 3 trend per sezione (italy.meta, italy.tiktok, international.meta, international.tiktok). Ogni trend deve avere hashtag reali trending, audio TikTok virali reali, formato (Reel/Carosello/Video/Duetto), engagement (virale/alto/medio) e idea contenuto specifica per il cliente.";
-
+  // Send ONLY client data — never model/tools/prompt
   fetch(WORKER,{
     method:"POST",
     headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({
-      model:"claude-sonnet-4-6",
-      max_tokens:4000,
-      tools:[tool],
-      tool_choice:{type:"tool",name:"pubblica_trend"},
-      messages:[{role:"user",content:prompt}]
-    })
+    body:JSON.stringify({name:sel.name,desc:sel.desc||""})
   })
   .then(function(r){
-    if(!r.ok)return r.json().then(function(d){throw new Error("["+r.status+"] "+(d.error?d.error.message:JSON.stringify(d)));});
+    if(!r.ok)return r.json().then(function(d){throw new Error("["+r.status+"] "+(d.error||JSON.stringify(d)));});
     return r.json();
   })
   .then(function(data){
-    var toolBlock=null;
-    (data.content||[]).forEach(function(b){if(b.type==="tool_use")toolBlock=b;});
-    if(!toolBlock||!toolBlock.input)throw new Error("Nessun dato ricevuto. Risposta: "+JSON.stringify(data.content).slice(0,200));
-    var parsed=toolBlock.input;
-    if(!parsed.italy||!parsed.international)throw new Error("Struttura non valida: "+JSON.stringify(parsed).slice(0,200));
-    saveTrends(sel.id,parsed);
+    if(!data.trends||!data.trends.italy||!data.trends.international)
+      throw new Error("Struttura non valida. Riprova.");
+    saveTr(sel.id,data);
     renderList();
-    document.getElementById("tbMeta").textContent="Ultima analisi: "+fmtDate(new Date().toISOString())+" alle "+fmtTime(new Date().toISOString());
+    document.getElementById("tbMeta").textContent="Ultima analisi: "+fd(new Date().toISOString())+" alle "+ft(new Date().toISOString());
     document.getElementById("tabsBar").style.display="flex";
-    renderTrends(parsed,false);
+    renderTrends(data,false);
   })
   .catch(function(err){
     document.getElementById("mainBody").innerHTML='<div class="err"><strong>Errore.</strong><br><br>'+esc(err.message)+'</div>';
   })
-  .finally(function(){loading=false;document.getElementById("goBtn").disabled=false;});
+  .finally(function(){busy=false;document.getElementById("goBtn").disabled=false;});
+}
+
+function confLabel(c){
+  if(c>=0.7)return {cls:"conf-verified",lbl:"Verificato",color:"#4a8c1c"};
+  if(c>=0.4)return {cls:"conf-weak",   lbl:"Segnale debole",color:"#c47a1a"};
+  return           {cls:"conf-ai",     lbl:"Suggerimento AI",color:"#7a5ab8"};
+}
+
+function renderCard(t,pf){
+  var ec=t.engagement==="virale"?"ev":t.engagement==="alto"?"ea":"em";
+  var conf=typeof t.confidence==="number"?t.confidence:0;
+  var cl=confLabel(conf);
+  var hp=(t.hashtags||[]).map(function(h){return'<span class="ph">'+esc(h)+'</span>';}).join("");
+  var ap=(t.trending_audio||[]).map(function(a){return'<span class="pa">&#9834; '+esc(a)+'</span>';}).join("");
+  var ad=t.audio_direction?'<span class="audio-dir">&#9836; '+esc(t.audio_direction)+'</span>':"";
+  var fp=t.format?'<span class="pf2">'+esc(t.format)+'</span>':"";
+  var srcs=(t.sources||[]).filter(function(s){return s.url;}).slice(0,3)
+    .map(function(s){return'<a class="src-link" href="'+esc(s.url)+'" target="_blank" rel="noopener">'+esc(s.title||s.url)+'</a>';}).join("");
+  var lc=t.last_checked?'<div class="checked">Verificato: '+esc(new Date(t.last_checked).toLocaleDateString("it-IT"))+'</div>':"";
+
+  return '<div class="card">'
+    +'<div class="card-top"><div class="card-title">'+esc(t.title||"")+'</div><span class="eng '+ec+'">'+esc(t.engagement||"medio")+'</span></div>'
+    +'<div class="conf-row">'
+      +'<span class="conf-badge '+cl.cls+'">'+cl.lbl+'</span>'
+      +'<div class="conf-bar-wrap"><div class="conf-bar" style="width:'+Math.round(conf*100)+'%;background:'+cl.color+'"></div></div>'
+      +'<span style="font-size:10px;color:var(--tx3)">'+Math.round(conf*100)+'%</span>'
+    +'</div>'
+    +'<div class="card-desc">'+esc(t.description||"")+'</div>'
+    +(t.basis?'<div class="basis-box">'+esc(t.basis)+'</div>':"")
+    +(t.idea?'<div class="idea-box"><div class="idea-lbl">&#128161; Idea contenuto</div><div class="idea-txt">'+esc(t.idea)+'</div></div>':"")
+    +(hp?'<div class="pill-sec"><div class="pill-lbl">Hashtag</div><div class="pills">'+hp+'</div></div>':"")
+    +(ap?'<div class="pill-sec"><div class="pill-lbl">Audio verificato TikTok</div><div class="pills">'+ap+'</div></div>':"")
+    +(ad?'<div class="pill-sec"><div class="pill-lbl">Direzione audio</div><div class="pills">'+ad+'</div></div>':"")
+    +(fp?'<div class="pill-sec"><div class="pill-lbl">Format</div><div class="pills">'+fp+'</div></div>':"")
+    +(srcs?'<div class="pill-sec"><div class="pill-lbl">Fonti</div><div class="sources-row">'+srcs+'</div></div>':"")
+    +lc
+    +'</div>';
 }
 
 function renderTrends(data,fromCache){
-  if(!data)return;
-  var market=data[tab];
+  if(!data||!data.trends)return;
+  var trends=data.trends;
+  var meta=data.meta||{};
+  var market=trends[tab];
   if(!market){document.getElementById("mainBody").innerHTML='<div class="err">Nessun dato per questa scheda.</div>';return;}
-  var cc=getCached(sel&&sel.id);
-  var html='<div class="up-bar"><div class="up-info"><span class="live-dot"></span>'
-    +esc(cc?fmtDate(cc.date):"")+(cc?" alle "+esc(fmtTime(cc.date)):"")
-    +(fromCache?' <span class="cached-badge">dalla cache</span>':'')+'</div>'
-    +'<button class="ref-btn" onclick="fetchTrends()">&#8635; Aggiorna</button></div>';
+  var ca=getCa(sel&&sel.id);
+
+  // Source bar
+  var srcBar='<div class="src-bar">';
+  (meta.sources_used||[]).forEach(function(s){srcBar+='<span class="src-chip src-ok">&#10003; '+esc(s)+'</span>';});
+  (meta.sources_unavailable||[]).forEach(function(s){srcBar+='<span class="src-chip src-no">'+esc(s)+'</span>';});
+  if(meta.note)srcBar+='<span style="margin-left:auto;font-size:10px;opacity:.7">'+esc(meta.note)+'</span>';
+  srcBar+='</div>';
+
+  var html='<div class="up-bar"><div class="up-info"><span class="ldot"></span>'
+    +esc(ca?fd(ca.ts):"")+(ca?" alle "+esc(ft(ca.ts)):"")
+    +(fromCache?' <span class="cbadge">dalla cache</span>':'')+'</div>'
+    +'<button class="ref-btn" onclick="fetchTrends()">&#8635; Aggiorna</button></div>'
+    +srcBar;
+
   ["meta","tiktok"].forEach(function(pf){
     var items=market[pf]||[];if(!items.length)return;
-    var lbl=pf==="meta"?"Meta - Instagram / Facebook":"TikTok";
+    var lbl=pf==="meta"?"Meta — Instagram / Facebook":"TikTok";
     var bc=pf==="meta"?"pf-meta":"pf-ttk";
     html+='<div class="pf-sec"><div class="pf-head"><span class="pf-badge '+bc+'">'+lbl+'</span><span class="pf-ct">'+items.length+' trend</span></div><div class="grid">';
-    items.forEach(function(t){
-      var ec=t.engagement==="virale"?"ev":t.engagement==="alto"?"ea":"em";
-      var hp=(t.hashtags||[]).map(function(h){return'<span class="pill-hash">'+esc(h)+'</span>';}).join("");
-      var ap=(t.trending_audio||[]).map(function(a){return'<span class="pill-audio">&#9834; '+esc(a)+'</span>';}).join("");
-      var fp=t.format?'<span class="pill-fmt">'+esc(t.format)+'</span>':"";
-      html+='<div class="card"><div class="card-top"><div class="card-title">'+esc(t.title||"")+'</div><span class="eng '+ec+'">'+esc(t.engagement||"medio")+'</span></div>'
-        +'<div class="card-desc">'+esc(t.description||"")+'</div>';
-      if(hp)html+='<div class="pill-section"><div class="pill-label">Hashtag trending</div><div class="pills">'+hp+'</div></div>';
-      if(ap)html+='<div class="pill-section"><div class="pill-label">Audio virale TikTok</div><div class="pills">'+ap+'</div></div>';
-      if(fp)html+='<div class="pill-section"><div class="pill-label">Format consigliato</div><div class="pills">'+fp+'</div></div>';
-      if(t.idea)html+='<div class="idea-box"><div class="idea-lbl">Idea contenuto</div><div class="idea-txt">'+esc(t.idea)+'</div></div>';
-      html+='</div>';
-    });
+    items.forEach(function(t){html+=renderCard(t,pf);});
     html+='</div></div>';
   });
+
   document.getElementById("mainBody").innerHTML=html;
+  document.getElementById("pdfBtn").style.display="flex";
 }
 
-function exportPDF(){
-  var cc=getCached(sel&&sel.id);
-  if(!cc||!cc.data)return;
-  var d=cc.data;
-  var meta=document.getElementById("pdfMeta");
-  meta.textContent="Cliente: "+sel.name+" — "+fmtDate(cc.date)+" alle "+fmtTime(cc.date);
-  // Build full print view
+// ── PDF export ────────────────────────────────────────────────────────────────
+document.getElementById("pdfBtn").addEventListener("click",function(){
+  var ca=getCa(sel&&sel.id);
+  if(!ca||!ca.data||!ca.data.trends)return;
+  var trends=ca.data.trends;
+  document.getElementById("pdfMeta").textContent=
+    "Cliente: "+sel.name+" — "+fd(ca.ts)+" alle "+ft(ca.ts);
+
   var html="";
-  var sections=[
-    {key:"italy",label:"Trend italiani"},
-    {key:"international",label:"Trend internazionali"}
-  ];
-  sections.forEach(function(s){
-    html+='<div class="pdf-section-title">'+s.label+'</div>';
-    ["meta","tiktok"].forEach(function(pf){
-      var items=(d[s.key]&&d[s.key][pf])||[];if(!items.length)return;
-      var lbl=pf==="meta"?"Meta — Instagram / Facebook":"TikTok";
-      var bc=pf==="meta"?"pf-meta":"pf-ttk";
-      html+='<div class="pf-sec"><div class="pf-head"><span class="pf-badge '+bc+'">'+lbl+'</span></div><div class="grid">';
-      items.forEach(function(t){
-        var ec=t.engagement==="virale"?"ev":t.engagement==="alto"?"ea":"em";
-        var hp=(t.hashtags||[]).map(function(h){return'<span class="pill-hash">'+esc(h)+'</span>';}).join("");
-        var ap=(t.trending_audio||[]).map(function(a){return'<span class="pill-audio">'+esc(a)+'</span>';}).join("");
-        var fp=t.format?'<span class="pill-fmt">'+esc(t.format)+'</span>':"";
-        html+='<div class="card"><div class="card-top"><div class="card-title">'+esc(t.title||"")+'</div><span class="eng '+ec+'">'+esc(t.engagement||"")+'</span></div>'
-          +'<div class="card-desc">'+esc(t.description||"")+'</div>';
-        if(hp)html+='<div class="pill-section"><div class="pill-label">Hashtag</div><div class="pills">'+hp+'</div></div>';
-        if(ap)html+='<div class="pill-section"><div class="pill-label">Audio TikTok</div><div class="pills">'+ap+'</div></div>';
-        if(fp)html+='<div class="pill-section"><div class="pill-label">Format</div><div class="pills">'+fp+'</div></div>';
-        if(t.idea)html+='<div class="idea-box"><div class="idea-lbl">Idea contenuto</div><div class="idea-txt">'+esc(t.idea)+'</div></div>';
-        html+='</div>';
+  [{key:"italy",label:"Trend italiani"},{key:"international",label:"Trend internazionali"}]
+    .forEach(function(s){
+      html+='<div class="pdf-section-title">'+s.label+'</div>';
+      ["meta","tiktok"].forEach(function(pf){
+        var items=(trends[s.key]&&trends[s.key][pf])||[];if(!items.length)return;
+        var lbl=pf==="meta"?"Meta — Instagram / Facebook":"TikTok";
+        var bc=pf==="meta"?"pf-meta":"pf-ttk";
+        html+='<div class="pf-sec"><div class="pf-head"><span class="pf-badge '+bc+'">'+lbl+'</span></div><div class="grid">';
+        items.forEach(function(t){html+=renderCard(t,pf);});
+        html+='</div></div>';
       });
-      html+='</div></div>';
     });
-  });
+
   document.getElementById("mainBody").innerHTML=html;
-  tab="italy";
-  document.querySelectorAll(".tab").forEach(function(t){t.classList.remove("on");});
-  document.querySelector(".tab[data-t='italy']").classList.add("on");
-  setTimeout(function(){window.print();},100);
-}
+  setTimeout(function(){window.print();},150);
+});
 
-document.getElementById("pdfBtn").addEventListener("click",exportPDF);
-
-loadClients();loadTrends();renderList();
-if(clients.length)pickClient(clients[0]);
+loadCl();loadTr();renderList();
+if(clients.length)pick(clients[0]);
 </script>
 </body>
 </html>

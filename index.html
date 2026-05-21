@@ -765,18 +765,18 @@ function affinityClass(score) {
   return { fill: "affinity-low", score: "score-low" };
 }
 
-function buildPrompt() {
-  const brand    = document.getElementById('brand').value.trim();
-  const sector   = document.getElementById('sector').value.trim();
-  const desc     = document.getElementById('description').value.trim();
-  const minK     = document.getElementById('followersMin').value.trim();
-  const maxK     = document.getElementById('followersMax').value.trim();
-  const chars    = document.getElementById('characteristics').value.trim();
-  const gender   = getGender();
-  const siteMap  = { Instagram: "instagram.com", TikTok: "tiktok.com", YouTube: "youtube.com" };
-  const site     = siteMap[selectedPlatform];
-  const genderLabel = gender === 'M' ? 'uomo' : gender === 'F' ? 'donna' : 'indifferente';
-  const genderHint  = gender === 'M' ? ' Preferisci pronomi/termini maschili nelle query.' : gender === 'F' ? ' Preferisci pronomi/termini femminili nelle query.' : '';
+function buildSearchPayload() {
+  return {
+    brand: document.getElementById('brand').value.trim(),
+    sector: document.getElementById('sector').value.trim(),
+    description: document.getElementById('description').value.trim(),
+    platform: selectedPlatform,
+    followersMin: document.getElementById('followersMin').value.trim(),
+    followersMax: document.getElementById('followersMax').value.trim(),
+    gender: getGender(),
+    characteristics: document.getElementById('characteristics').value.trim()
+  };
+}
 
   return `Influencer italiani su ${selectedPlatform} per: ${brand} (${sector})${desc ? ', ' + desc.substring(0,80) : ''}.
 Genere: ${genderLabel}. Follower: ${minK||'0'}K–${maxK||'∞'}K.${chars ? ' Note: ' + chars.substring(0,80) + '.' : ''}
@@ -895,12 +895,7 @@ async function startSearch() {
     const response = await fetch("https://influencer-proxy.m-villa-a79.workers.dev/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-6",
-        max_tokens: 1000,
-        tools: [{ type: "web_search_20260209", name: "web_search", max_uses: 1 }],
-        messages: [{ role: "user", content: buildPrompt() }]
-      })
+   body: JSON.stringify(buildSearchPayload())
     });
     const rawText = await response.text();
     if (response.status === 429 && attempt < 2) {

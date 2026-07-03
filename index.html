@@ -36,6 +36,11 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
 .fb{display:flex;gap:6px}
 .btn-ok{flex:1;padding:8px;background:var(--ac);border:none;border-radius:var(--r);font-size:12px;color:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500}
 .btn-no{flex:1;padding:8px;background:none;border:1px solid var(--br2);border-radius:var(--r);font-size:12px;color:var(--tx2);cursor:pointer;font-family:'DM Sans',sans-serif}
+.donate-box{margin-top:10px;padding:11px;border:1px solid var(--br);border-radius:var(--r);background:var(--bg);}
+.donate-title{font-size:12px;font-weight:600;color:var(--tx);margin-bottom:4px;}
+.donate-text{font-size:11px;line-height:1.45;color:var(--tx2);margin-bottom:8px;}
+.donate-link{display:block;text-align:center;padding:7px 10px;border-radius:var(--r);background:var(--ac);color:#fff;text-decoration:none;font-size:12px;font-weight:500;}
+.donate-link:hover{opacity:.85;}
 /* MAIN */
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden}
 .topbar{padding:16px 24px;border-bottom:1px solid var(--br);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-shrink:0}
@@ -140,10 +145,17 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
           <button class="btn-no" id="cancelBtn">Annulla</button>
         </div>
       </div>
-      <button class="add-btn" id="addBtn">
-        <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-        Aggiungi cliente
-      </button>
+     <button class="add-btn" id="addBtn">
+  <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+  Aggiungi cliente
+</button>
+<div class="donate-box">
+  <div class="donate-title">Sostieni TrendPulse</div>
+  <div class="donate-text">Il tool sarà sempre gratuito, ma se vuoi pagare un caffè al suo autore sei il benvenuto.</div>
+  <a class="donate-link" href="https://ko-fi.com/nibbio92" target="_blank" rel="noopener">
+    Offri un caffè
+  </a>
+</div>
     </div>
   </div>
 

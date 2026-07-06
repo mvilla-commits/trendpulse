@@ -171,9 +171,10 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
       </button>
     </div>
     <div class="tabs" id="tabsBar" style="display:none">
-      <button class="tab on" data-t="italy">&#127470;&#127481; Italia</button>
-      <button class="tab" data-t="international">&#127760; Internazionale</button>
-    </div>
+  <button class="tab on" data-t="italy">🇮🇹 Italia</button>
+  <button class="tab" data-t="international">🌐 Internazionale</button>
+  <button class="tab" data-t="trendjacking">⚡ Trendjacking</button>
+</div>
     <div class="body" id="mainBody">
       <div class="center">
         <div class="c-icon">&#9678;</div>
@@ -381,6 +382,9 @@ function renderTrends(data,fromCache){
   var trends=data.trends;
   var meta=data.meta||{};
   var market=trends[tab];
+  if(tab === "trendjacking"){
+  renderTrendjacking(data, fromCache);
+  return;}
   if(!market){document.getElementById("mainBody").innerHTML='<div class="err">Nessun dato per questa scheda.</div>';return;}
   var ca=getCa(sel&&sel.id);
 
@@ -405,6 +409,54 @@ function renderTrends(data,fromCache){
     items.forEach(function(t){html+=renderCard(t,pf);});
     html+='</div></div>';
   });
+
+  document.getElementById("mainBody").innerHTML=html;
+  document.getElementById("pdfBtn").style.display="flex";
+}
+
+  function renderTrendjacking(data,fromCache){
+  var items=(data.trends&&data.trends.trendjacking)||[];
+  var meta=data.meta||{};
+  var ca=getCa(sel&&sel.id);
+
+  var srcBar='<div class="src-bar">';
+  (meta.sources_used||[]).forEach(function(s){srcBar+='<span class="src-chip src-ok">&#10003; '+esc(s)+'</span>';});
+  (meta.sources_unavailable||[]).forEach(function(s){srcBar+='<span class="src-chip src-no">'+esc(s)+'</span>';});
+  if(meta.note)srcBar+='<span style="margin-left:auto;font-size:10px;opacity:.7">'+esc(meta.note)+'</span>';
+  srcBar+='</div>';
+
+  var html='<div class="up-bar"><div class="up-info"><span class="ldot"></span>'
+    +esc(ca?fd(ca.ts):"")+(ca?" alle "+esc(ft(ca.ts)):"")
+    +(fromCache?' <span class="cbadge">dalla cache</span>':'')+'</div>'
+    +'<button class="ref-btn" onclick="fetchTrends()">&#8635; Aggiorna</button></div>'
+    +srcBar;
+
+  html+='<div class="pf-sec"><div class="pf-head"><span class="pf-badge pf-ttk">Trendjacking</span><span class="pf-ct">'+items.length+' segnali</span></div><div class="grid">';
+
+  items.forEach(function(t){
+    var conf=typeof t.confidence==="number"?t.confidence:0;
+    var cl=confLabel(conf);
+    var link=t.url?'<a class="src-link" href="'+esc(t.url)+'" target="_blank" rel="noopener">'+esc(t.source||t.url)+'</a>':'';
+
+    html+='<div class="card">'
+      +'<div class="card-top"><div class="card-title">'+esc(t.title||"")+'</div></div>'
+      +'<div class="conf-row">'
+        +'<span class="conf-badge '+cl.cls+'">'+cl.lbl+'</span>'
+        +'<div class="conf-bar-wrap"><div class="conf-bar" style="width:'+Math.round(conf*100)+'%;background:'+cl.color+'"></div></div>'
+        +'<span style="font-size:10px;color:var(--tx3)">'+Math.round(conf*100)+'%</span>'
+      +'</div>'
+
+      +(t.trend_specifico?'<div class="pill-sec"><div class="pill-lbl">Trend specifico</div><div class="card-desc">'+esc(t.trend_specifico)+'</div></div>':'')
+      +(t.cosa_stanno_facendo_i_brand?'<div class="idea-box"><div class="idea-lbl">Cosa stanno facendo i brand</div><div class="idea-txt">'+esc(t.cosa_stanno_facendo_i_brand)+'</div></div>':'')
+      +(t.meccanica?'<div class="pill-sec"><div class="pill-lbl">Meccanica</div><div class="pills"><span class="audio-dir">'+esc(t.meccanica)+'</span></div></div>':'')
+      +(t.brand_or_category?'<div class="pill-sec"><div class="pill-lbl">Brand / categoria</div><div class="pills"><span class="pf2">'+esc(t.brand_or_category)+'</span></div></div>':'')
+      +(t.why_it_matters?'<div class="basis-box">'+esc(t.why_it_matters)+'</div>':'')
+      +(link?'<div class="pill-sec"><div class="pill-lbl">Fonte</div><div class="sources-row">'+link+'</div></div>':'')
+      +(t.last_checked?'<div class="checked">Verificato: '+esc(new Date(t.last_checked).toLocaleDateString("it-IT"))+'</div>':'')
+      +'</div>';
+  });
+
+  html+='</div></div>';
 
   document.getElementById("mainBody").innerHTML=html;
   document.getElementById("pdfBtn").style.display="flex";

@@ -516,6 +516,7 @@ document.getElementById("pdfBtn").style.display="none";}
       +'</div>'
       +(t.trend_specifico?'<div class="pill-sec"><div class="pill-lbl">Trend specifico</div><div class="card-desc">'+esc(t.trend_specifico)+'</div></div>':'')
       +(t.cosa_stanno_facendo_i_brand?'<div class="idea-box"><div class="idea-lbl">Cosa stanno facendo i brand</div><div class="idea-txt">'+esc(t.cosa_stanno_facendo_i_brand)+'</div></div>':'')
+      +(t.fallo_anche_tu?'<div class="idea-box"><div class="idea-lbl">Fallo anche tu</div><div class="idea-txt">'+esc(t.fallo_anche_tu)+'</div></div>':'')
       +(t.meccanica?'<div class="pill-sec"><div class="pill-lbl">Meccanica</div><div class="pills"><span class="audio-dir">'+esc(t.meccanica)+'</span></div></div>':'')
       +(link?'<div class="pill-sec"><div class="pill-lbl">Fonte</div><div class="sources-row">'+link+'</div></div>':'')
       +(t.last_checked?'<div class="checked">Verificato: '+esc(new Date(t.last_checked).toLocaleDateString("it-IT"))+'</div>':'')
